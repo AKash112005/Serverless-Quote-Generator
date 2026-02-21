@@ -3,89 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Motivation | Serverless App</title>
+<title>Quote Generator | Serverless App</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
+    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #4e73df, #1cc88a);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    padding: 20px;
 }
 
 .container {
-    background: #ffffff;
+    background: white;
     padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-    width: 100%;
-    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 400px;
     text-align: center;
-    transition: transform 0.3s ease;
-}
-
-.container:hover {
-    transform: translateY(-5px);
+    transition: 0.3s ease;
 }
 
 h1 {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #333;
-    font-size: 24px;
-}
-
-.quote-box {
-    margin: 20px 0;
-    min-height: 80px;
 }
 
 #quote {
     font-size: 18px;
-    color: #444;
-    margin-bottom: 10px;
-    line-height: 1.5;
-}
-
-#author {
-    font-size: 14px;
-    color: #777;
-    font-style: italic;
+    color: #555;
+    margin: 20px 0;
+    min-height: 60px;
 }
 
 button {
-    padding: 12px 22px;
+    padding: 12px 20px;
     border: none;
     border-radius: 8px;
     background: #4e73df;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
 }
 
 button:hover {
     background: #2e59d9;
-    transform: scale(1.05);
 }
 
 .loader {
     display: none;
     margin-top: 15px;
     font-size: 14px;
-    color: #999;
+    color: #888;
 }
 
 .footer {
-    margin-top: 25px;
+    margin-top: 20px;
     font-size: 12px;
     color: #aaa;
 }
@@ -96,41 +72,25 @@ button:hover {
 
 <div class="container">
     <h1>✨ Daily Motivation</h1>
-
-    <div class="quote-box">
-        <div id="quote">Click below to get inspired 🚀</div>
-        <div id="author"></div>
-    </div>
-
+    <div id="quote">Click the button to get inspired!</div>
     <button onclick="getQuote()">Get Quote</button>
-    <div class="loader" id="loader">Fetching quote...</div>
-
-    <div class="footer">
-        Powered by AWS Lambda + API Gateway + S3
-    </div>
+    <div class="loader" id="loader">Loading...</div>
+    <div class="footer">Powered by AWS Serverless</div>
 </div>
 
 <script>
 function getQuote() {
     const loader = document.getElementById("loader");
     const quoteBox = document.getElementById("quote");
-    const authorBox = document.getElementById("author");
 
     loader.style.display = "block";
     quoteBox.innerText = "";
-    authorBox.innerText = "";
 
     fetch("https://8eyvmkf3f7.execute-api.ap-southeast-2.amazonaws.com")
         .then(response => response.json())
         .then(data => {
             loader.style.display = "none";
-
-            if (data.success) {
-                quoteBox.innerText = `"${data.data.quote}"`;
-                authorBox.innerText = `— ${data.data.author}`;
-            } else {
-                quoteBox.innerText = "No quote available.";
-            }
+            quoteBox.innerText = `"${data.quote}"`;
         })
         .catch(error => {
             loader.style.display = "none";
