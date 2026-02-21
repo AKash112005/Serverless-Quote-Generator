@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quote Generator | Serverless App</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 400px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#quote {
+    font-size: 18px;
+    color: #555;
+    margin: 20px 0;
+    min-height: 60px;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #4e73df;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #2e59d9;
+}
+
+.loader {
+    display: none;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #888;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>✨ Daily Motivation</h1>
+    <div id="quote">Click the button to get inspired!</div>
+    <button onclick="getQuote()">Get Quote</button>
+    <div class="loader" id="loader">Loading...</div>
+    <div class="footer">Powered by AWS Serverless</div>
+</div>
+
+<script>
+function getQuote() {
+    const loader = document.getElementById("loader");
+    const quoteBox = document.getElementById("quote");
+
+    loader.style.display = "block";
+    quoteBox.innerText = "";
+
+    fetch("https://8eyvmkf3f7.execute-api.ap-southeast-2.amazonaws.com")
+        .then(response => response.json())
+        .then(data => {
+            loader.style.display = "none";
+            quoteBox.innerText = `"${data.quote}"`;
+        })
+        .catch(error => {
+            loader.style.display = "none";
+            quoteBox.innerText = "Something went wrong!";
+            console.error(error);
+        });
+}
+</script>
+
+</body>
+</html>
